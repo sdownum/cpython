@@ -1461,7 +1461,7 @@ pysqlite_connection_backup(pysqlite_Connection *self, PyObject *args, PyObject *
     const char *name = "main";
     int rc;
     int callback_error = 0;
-    double sleep_secs = 0.250;
+    double sleep_secs = .250;
     sqlite3 *bck_conn;
     sqlite3_backup *bck_handle;
     static char *keywords[] = {"target", "pages", "progress", "name", "sleep", NULL};
@@ -1531,7 +1531,7 @@ pysqlite_connection_backup(pysqlite_Connection *self, PyObject *args, PyObject *
                the engine could not make any progress */
             if (rc == SQLITE_BUSY || rc == SQLITE_LOCKED) {
                 Py_BEGIN_ALLOW_THREADS
-                sqlite3_sleep(sleep_secs * 1000.0);
+		  sqlite3_sleep((int)(sleep_secs * 1000.0));
                 Py_END_ALLOW_THREADS
             }
         } while (rc == SQLITE_OK || rc == SQLITE_BUSY || rc == SQLITE_LOCKED);
